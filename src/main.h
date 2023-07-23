@@ -1,3 +1,6 @@
+#pragma once
+
+#include "local_capture.h"
 #include <gtkmm.h>
 
 class MyWindow : public Gtk::Window {
@@ -7,5 +10,8 @@ public:
 
 public:
   Gtk::Button button;
-  void startCapture();
+  void toggleCapture();
+
+private:
+  LocalCapture *m_localCapture;
 };
