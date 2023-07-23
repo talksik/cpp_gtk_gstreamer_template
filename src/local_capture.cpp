@@ -11,17 +11,21 @@ LocalCapture::LocalCapture() {
   GstElement *video = gst_element_factory_make("v4l2src", "video");
   GstElement *videoconvert =
       gst_element_factory_make("videoconvert", "videoconvert");
-  gtksink = gst_element_factory_make("autovideosink", "sink");
+  sink = gst_element_factory_make("appsink", "sink");
 
-  if (!video || !videoconvert || !gtksink) {
+  // set callback for appsink
+  g_object_set(G_OBJECT(sink), "emit-signals", TRUE, "sync", FALSE, nullptr);
+  g_signal_connect(sink, "new-sample", G_CALLBACK(on_new_sample), this);
+
+  if (!video || !videoconvert || !sink) {
     std::cerr << "failed to create elements" << std::endl;
     return;
   }
 
   m_pipeline = gst_pipeline_new("local_capture");
 
-  gst_bin_add_many(GST_BIN(m_pipeline), video, videoconvert, gtksink, nullptr);
-  if (!gst_element_link_many(video, videoconvert, gtksink, nullptr)) {
+  gst_bin_add_many(GST_BIN(m_pipeline), video, videoconvert, sink, nullptr);
+  if (!gst_element_link_many(video, videoconvert, sink, nullptr)) {
     g_printerr("Elements could not be linked.\n");
   }
 
@@ -56,6 +60,22 @@ LocalCapture::LocalCapture() {
       nullptr);
 
   std::cout << "local capture ready" << std::endl;
+}
+
+int LocalCapture::on_new_sample(GstElement *sink, gpointer data) {
+  GstSample *sample;
+
+  /* Retrieve the buffer */
+  g_signal_emit_by_name(sink, "pull-sample", &sample);
+  if (sample) {
+    /* The only thing we do in this example is print a * to indicate a received
+     * buffer */
+    g_print("*");
+    gst_sample_unref(sample);
+    return GST_FLOW_OK;
+  }
+
+  return GST_FLOW_ERROR;
 }
 
 void LocalCapture::start() {

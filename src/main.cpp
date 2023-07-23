@@ -14,6 +14,7 @@ MyWindow::MyWindow() {
 
   m_localCapture = new LocalCapture();
 
+  // todo: show frames here
   //GtkWidget *area;
   // g_object_get(m_localCapture->gtksink, "widget", &area, NULL);
   // Gtk::Widget *widget = Glib::wrap(area);
