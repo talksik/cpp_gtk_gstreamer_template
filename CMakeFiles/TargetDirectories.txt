@@ -1,3 +1,0 @@
-/home/talksik/Code/flowy/client/CMakeFiles/flowy.dir
-/home/talksik/Code/flowy/client/CMakeFiles/edit_cache.dir
-/home/talksik/Code/flowy/client/CMakeFiles/rebuild_cache.dir
