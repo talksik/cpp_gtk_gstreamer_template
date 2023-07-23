@@ -13,3 +13,6 @@ echo "Running make..."
 echo "====================="
 
 make
+
+#and run
+./flowy
