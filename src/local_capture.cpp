@@ -68,9 +68,11 @@ int LocalCapture::on_new_sample(GstElement *sink, gpointer data) {
   /* Retrieve the buffer */
   g_signal_emit_by_name(sink, "pull-sample", &sample);
   if (sample) {
-    /* The only thing we do in this example is print a * to indicate a received
-     * buffer */
-    g_print("*");
+    GstBuffer *buffer = gst_sample_get_buffer(sample);
+    GstMapInfo map;
+    gst_buffer_map(buffer, &map, GST_MAP_READ);
+    std::cout << "received " << map.size << " bytes" << std::endl;
+
     gst_sample_unref(sample);
     return GST_FLOW_OK;
   }

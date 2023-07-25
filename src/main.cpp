@@ -13,9 +13,10 @@ MyWindow::MyWindow() {
   set_title("flowy");
 
   m_localCapture = new LocalCapture();
+  Gtk::Picture picture;
 
   // todo: show frames here
-  //GtkWidget *area;
+  // GtkWidget *area;
   // g_object_get(m_localCapture->gtksink, "widget", &area, NULL);
   // Gtk::Widget *widget = Glib::wrap(area);
   // set_child(*widget);
